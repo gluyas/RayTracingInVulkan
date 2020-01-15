@@ -32,6 +32,12 @@ struct UserSettings final
 	// Scene
 	bool RenderTextures;
 
+	//Skin
+	float Melanin;
+	float KB;
+	float BloodSaturation;
+	int KEpi;
+
 	bool RequiresAccumulationReset(const UserSettings& prev) const
 	{
 		return
@@ -40,7 +46,11 @@ struct UserSettings final
 			NumberOfBounces != prev.NumberOfBounces ||
 			FieldOfView != prev.FieldOfView ||
 			Aperture != prev.Aperture ||
-			FocusDistance != prev.FocusDistance;
+			FocusDistance != prev.FocusDistance ||
+			Melanin != prev.Melanin ||
+			KB != prev.KB ||
+			BloodSaturation != prev.BloodSaturation ||
+			KEpi != prev.KEpi;
 	}
 
 	bool RequiresReload(const UserSettings& prev) const

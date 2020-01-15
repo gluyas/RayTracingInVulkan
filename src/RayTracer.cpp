@@ -67,6 +67,11 @@ Assets::UniformBufferObject RayTracer::GetUniformBufferObject(const VkExtent2D e
 	ubo.GammaCorrection = userSettings_.GammaCorrection;
 	ubo.HasSky = init.HasSky;
 
+	ubo.Melanin = userSettings_.Melanin;
+	ubo.KB = userSettings_.KB;
+	ubo.BloodSaturation = userSettings_.BloodSaturation;
+	ubo.KEpi = userSettings_.KEpi;
+
 	return ubo;
 }
 
@@ -295,6 +300,11 @@ void RayTracer::LoadScene(const uint32_t sceneIndex)
 	userSettings_.Aperture = cameraInitialState_.Aperture;
 	userSettings_.FocusDistance = cameraInitialState_.FocusDistance;
 	userSettings_.GammaCorrection = cameraInitialState_.GammaCorrection;
+
+	userSettings_.Melanin = cameraInitialState_.Melanin;
+	userSettings_.KB = cameraInitialState_.KB;
+	userSettings_.BloodSaturation = cameraInitialState_.BloodSaturation;
+	userSettings_.KEpi = cameraInitialState_.KEpi;
 
 	cameraX_ = 0;
 	cameraY_ = 0;

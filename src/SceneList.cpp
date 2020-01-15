@@ -32,6 +32,11 @@ SceneAssets SceneList::CubeAndSpheres(CameraInitialState& camera)
 	camera.GammaCorrection = false;
 	camera.HasSky = true;
 
+	camera.Melanin = 0.0f;
+	camera.KB = 0.0f;
+	camera.BloodSaturation = 0.3f;
+	camera.KEpi = 1;
+
 	std::vector<Model> models;
 	std::vector<Texture> textures;
 
@@ -55,6 +60,11 @@ SceneAssets SceneList::RayTracingInOneWeekend(CameraInitialState& camera)
 	camera.FocusDistance = 10.0f;
 	camera.GammaCorrection = true;
 	camera.HasSky = true;
+
+	camera.Melanin = 0.0f;
+	camera.KB = 0.0f;
+	camera.BloodSaturation = 0.3f;
+	camera.KEpi = 1;
 
 	const bool isProc = true;
 
@@ -115,6 +125,11 @@ SceneAssets SceneList::PlanetsInOneWeekend(CameraInitialState& camera)
 	camera.FocusDistance = 10.0f;
 	camera.GammaCorrection = true;
 	camera.HasSky = true;
+
+	camera.Melanin = 0.0f;
+	camera.KB = 0.0f;
+	camera.BloodSaturation = 0.3f;
+	camera.KEpi = 1;
 
 	const bool isProc = true;
 
@@ -179,6 +194,11 @@ SceneAssets SceneList::LucyInOneWeekend(CameraInitialState& camera)
 	camera.FocusDistance = 10.0f;
 	camera.GammaCorrection = true;
 	camera.HasSky = true;
+
+	camera.Melanin = 0.0f;
+	camera.KB = 0.0f;
+	camera.BloodSaturation = 0.3f;
+	camera.KEpi = 1;
 
 	const bool isProc = true;
 
@@ -269,6 +289,11 @@ SceneAssets SceneList::CornellBox(CameraInitialState& camera)
 	camera.GammaCorrection = true;
 	camera.HasSky = false;
 
+	camera.Melanin = 0.0f;
+	camera.KB = 0.0f;
+	camera.BloodSaturation = 0.3f;
+	camera.KEpi = 1;
+
 	const auto i = mat4(1);
 	const auto white = Material::Lambertian(vec3(0.73f, 0.73f, 0.73f));
 
@@ -294,6 +319,11 @@ SceneAssets SceneList::CornellBoxLucy(CameraInitialState& camera)
 	camera.FocusDistance = 10.0f;
 	camera.GammaCorrection = true;
 	camera.HasSky = false;
+
+	camera.Melanin = 0.0f;
+	camera.KB = 0.0f;
+	camera.BloodSaturation = 0.3f;
+	camera.KEpi = 1;
 
 	const auto i = mat4(1);
 	const auto sphere = Model::CreateSphere(vec3(555 - 130, 165.0f, -165.0f / 2 - 65), 80.0f, Material::Dielectric(1.5f), true);
@@ -322,6 +352,11 @@ SceneAssets SceneList::Alex(CameraInitialState& camera)
 	camera.FocusDistance = 2.0f;
 	camera.GammaCorrection = false;
 	camera.HasSky = true;
+
+	camera.Melanin = 0.02f;
+	camera.KB = 0.2f;
+	camera.BloodSaturation = 0.7f;
+	camera.KEpi = 1;
 
 	std::vector<Model> models;
 	std::vector<Texture> textures;

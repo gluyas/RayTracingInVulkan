@@ -25,6 +25,11 @@ public:
 		float FocusDistance;
 		bool GammaCorrection;
 		bool HasSky;
+
+		float Melanin;
+		float KB;
+		float BloodSaturation;
+		uint32_t KEpi;
 	};
 
 	static SceneAssets CubeAndSpheres(CameraInitialState& camera);

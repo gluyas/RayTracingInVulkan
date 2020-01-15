@@ -12,4 +12,9 @@ struct UniformBufferObject
 	uint RandomSeed;
 	bool GammaCorrection;
 	bool HasSky;
+
+	float Melanin;
+	float KB;
+	float BloodSaturation;
+	uint KEpi;
 };

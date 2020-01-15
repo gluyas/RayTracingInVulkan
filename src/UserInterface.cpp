@@ -214,6 +214,14 @@ void UserInterface::DrawSettings()
 		ImGui::Separator();
 		ImGui::Checkbox("Textures", &Settings().RenderTextures);
 		ImGui::NewLine();
+
+		ImGui::Text("Skin");
+		ImGui::Separator();
+		ImGui::SliderFloat("Melanin", &Settings().Melanin, 0.0f, 0.1f, "%.2f");
+		ImGui::SliderFloat("KB", &Settings().KB, 0.0f, 2.0f, "%.1f");
+		ImGui::SliderFloat("Blood Saturation", &Settings().BloodSaturation, 0.3f, 1.0f, "%.2f");
+		ImGui::SliderInt("K Epi", &Settings().KEpi, 1, 5);
+		ImGui::NewLine();
 	}
 	ImGui::End();
 }
