@@ -1,0 +1,5 @@
+https://www.youtube.com/watch?v=9airvjDaVh4
+https://blender.stackexchange.com/questions/15510/possible-to-bake-texture-to-new-uv-map
+https://blender.stackexchange.com/questions/19696/how-can-i-merge-several-uv-images-into-one-uv-image
+https://docs.blender.org/manual/en/latest/modeling/meshes/editing/uv/layout_workflow.html
+https://en.wikibooks.org/wiki/Blender_3D:_Noob_to_Pro/UV_Map_Basics
