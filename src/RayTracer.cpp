@@ -1,3 +1,9 @@
+#ifdef DEBUG
+#define DEBUG_MSG(str) do { std::cout << str << std::endl; } while( false )
+#else
+#define DEBUG_MSG(str) do { } while ( false )
+#endif
+
 #include "RayTracer.hpp"
 #include "UserInterface.hpp"
 #include "UserSettings.hpp"
@@ -12,12 +18,6 @@
 #include "Vulkan/Window.hpp"
 #include <iostream>
 #include <sstream>
-
-#ifdef DEBUG
-#define DEBUG_MSG(str) do { std::cout << str << std::endl; } while( false )
-#else
-#define DEBUG_MSG(str) do { } while ( false )
-#endif
 
 namespace
 {
@@ -79,6 +79,7 @@ void RayTracer::OnDeviceSet()
 {
 	Application::OnDeviceSet();
 
+	starting_ = true;
 	LoadScene(userSettings_.SceneIndex);
 	CreateAccelerationStructures();
 }
@@ -115,7 +116,7 @@ void RayTracer::DrawFrame()
 		return;
 	}
 
-	if (userSettings_.RequiresReload(previousSettings_)) {
+	if (!starting_ && userSettings_.RequiresReload(previousSettings_)) {
 		DEBUG_MSG("Reload Scene");
 		Device().WaitIdle();
 		DeleteSwapChain();
@@ -174,6 +175,8 @@ void RayTracer::Render(VkCommandBuffer commandBuffer, const uint32_t imageIndex)
 
 		stats.TotalSamples = totalNumberOfSamples_;
 	}
+
+	if (starting_) starting_ = false;
 
 	userInterface_->Render(commandBuffer, SwapChainFrameBuffer(imageIndex), stats);
 }
@@ -264,7 +267,7 @@ void RayTracer::LoadScene(const uint32_t sceneIndex)
 {
 	auto [models, textures] = SceneList::AllScenes[sceneIndex].second(cameraInitialState_);
 
-	// If there are no texture, add a dummy one. It makes the pipeline setup a lot easier.
+	// If there are no textures, add a dummy one. It makes the pipeline setup a lot easier.
 	if (textures.empty())
 	{
 		textures.push_back(Assets::Texture::LoadTexture("../assets/textures/white.png", Vulkan::SamplerConfig()));
@@ -287,9 +290,10 @@ void RayTracer::LoadScene(const uint32_t sceneIndex)
 			for (size_t i = 0; i < size2; i++) {
 				textures.push_back(Assets::Texture::LoadTexture("../assets/textures/grey.png", Vulkan::SamplerConfig()));
 			}
-			textures.push_back(Assets::Texture::LoadTexture("../assets/maps/DisplacementMap1.png", Vulkan::SamplerConfig()));
+			textures.push_back(Assets::Texture::LoadTexture("../assets/maps/AlexJoinedDisp.png", Vulkan::SamplerConfig()));
+			/*textures.push_back(Assets::Texture::LoadTexture("../assets/maps/DisplacementMap1.png", Vulkan::SamplerConfig()));
 			textures.push_back(Assets::Texture::LoadTexture("../assets/maps/DisplacementMap2.png", Vulkan::SamplerConfig()));
-			textures.push_back(Assets::Texture::LoadTexture("../assets/maps/DisplacementMap3.png", Vulkan::SamplerConfig()));
+			textures.push_back(Assets::Texture::LoadTexture("../assets/maps/DisplacementMap3.png", Vulkan::SamplerConfig()));*/
 		}
 	}
 

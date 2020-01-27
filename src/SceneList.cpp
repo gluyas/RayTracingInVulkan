@@ -361,7 +361,8 @@ SceneAssets SceneList::Alex(CameraInitialState& camera)
 	std::vector<Model> models;
 	std::vector<Texture> textures;
 
-	auto alex = Model::LoadModel("../assets/models/Alex.obj");
+	//auto alex = Model::LoadModel("../assets/models/Alex.obj");
+	auto alex = Model::LoadModel("../assets/models/AlexOneMat.obj");
 
 	const auto i = mat4(1);
 	const float scaleFactor = 0.01f;
@@ -375,21 +376,23 @@ SceneAssets SceneList::Alex(CameraInitialState& camera)
 
 	std::vector<Material> m;
 
-	m.push_back(Material::DiffuseLight(vec3(0.0f)));
+	//m.push_back(Material::DiffuseLight(vec3(0.0f)));
 	m.push_back(Material::Specular(vec3(1.0f), 0.5f, 0));
-	m.push_back(Material::Specular(vec3(1.0f), 0.5f, 1));
-	m.push_back(Material::Specular(vec3(1.0f), 0.5f, 2));
+	//m.push_back(Material::Specular(vec3(1.0f), 0.5f, 1));
+	//m.push_back(Material::Specular(vec3(1.0f), 0.5f, 2));
 
 	alex.SetMaterials(m);
 
 	models.push_back(std::move(alex));
 
-	textures.push_back(Texture::LoadTexture("../assets/textures/Alex1.jpg", Vulkan::SamplerConfig()));
+	textures.push_back(Texture::LoadTexture("../assets/textures/AlexJoinedBake.png", Vulkan::SamplerConfig()));
+	textures.push_back(Texture::LoadTexture("../assets/maps/AlexJoinedDisp.png", Vulkan::SamplerConfig()));
+	/*textures.push_back(Texture::LoadTexture("../assets/textures/Alex1.jpg", Vulkan::SamplerConfig()));
 	textures.push_back(Texture::LoadTexture("../assets/textures/Alex2.jpg", Vulkan::SamplerConfig()));
 	textures.push_back(Texture::LoadTexture("../assets/textures/Alex3.jpg", Vulkan::SamplerConfig()));
 	textures.push_back(Texture::LoadTexture("../assets/maps/DisplacementMap1.png", Vulkan::SamplerConfig()));
 	textures.push_back(Texture::LoadTexture("../assets/maps/DisplacementMap2.png", Vulkan::SamplerConfig()));
-	textures.push_back(Texture::LoadTexture("../assets/maps/DisplacementMap3.png", Vulkan::SamplerConfig()));
+	textures.push_back(Texture::LoadTexture("../assets/maps/DisplacementMap3.png", Vulkan::SamplerConfig()));*/
 
 	return std::forward_as_tuple(std::move(models), std::move(textures));
 }

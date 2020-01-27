@@ -54,6 +54,8 @@ private:
 	uint32_t numberOfSamples_{};
 	bool resetAccumulation_{};
 
+	bool starting_{};
+
 	// Benchmark stats
 	double sceneInitialTime_{};
 	double periodInitialTime_{};
