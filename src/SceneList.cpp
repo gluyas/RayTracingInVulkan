@@ -362,7 +362,8 @@ SceneAssets SceneList::Alex(CameraInitialState& camera)
 	std::vector<Texture> textures;
 
 	//auto alex = Model::LoadModel("../assets/models/Alex.obj");
-	auto alex = Model::LoadModel("../assets/models/AlexOneMat.obj");
+	//auto alex = Model::LoadModel("../assets/models/AlexOneMat.obj");
+	auto alex = Model::LoadModel("../assets/models/AlexDisplacedMedRes.obj");
 
 	const auto i = mat4(1);
 	const float scaleFactor = 0.01f;
@@ -386,7 +387,7 @@ SceneAssets SceneList::Alex(CameraInitialState& camera)
 	models.push_back(std::move(alex));
 
 	textures.push_back(Texture::LoadTexture("../assets/textures/AlexJoinedBake.png", Vulkan::SamplerConfig()));
-	textures.push_back(Texture::LoadTexture("../assets/maps/AlexJoinedDisp.png", Vulkan::SamplerConfig()));
+	//textures.push_back(Texture::LoadTexture("../assets/maps/AlexJoinedDisp.png", Vulkan::SamplerConfig()));
 	/*textures.push_back(Texture::LoadTexture("../assets/textures/Alex1.jpg", Vulkan::SamplerConfig()));
 	textures.push_back(Texture::LoadTexture("../assets/textures/Alex2.jpg", Vulkan::SamplerConfig()));
 	textures.push_back(Texture::LoadTexture("../assets/textures/Alex3.jpg", Vulkan::SamplerConfig()));

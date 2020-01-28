@@ -263,6 +263,26 @@ void RayTracer::OnMouseButton(const int button, const int action, const int mods
 	}
 }
 
+void RayTracer::OnMouseScroll(double xoffset, double yoffset)
+{
+	if (userSettings_.Benchmark ||
+		userInterface_->WantsToCaptureMouse())
+	{
+		return;
+	}
+
+	float fov = userSettings_.FieldOfView;
+
+	if (fov >= 10.0f && fov <= 90.0f)
+		fov *= pow(1.1f, -yoffset);
+	if (fov <= 10.0f)
+		fov = 10.0f;
+	if (fov >= 90.0f)
+		fov = 90.0f;
+
+	userSettings_.FieldOfView = fov;
+}
+
 void RayTracer::LoadScene(const uint32_t sceneIndex)
 {
 	auto [models, textures] = SceneList::AllScenes[sceneIndex].second(cameraInitialState_);

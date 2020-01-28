@@ -44,6 +44,15 @@ namespace
 			this_->OnMouseButton(button, action, mods);
 		}
 	}
+	
+	void GlfwMouseScrollCallback(GLFWwindow* window, const double xoffset, const double yoffset)
+	{
+		const auto this_ = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+		if (this_->OnMouseScroll)
+		{
+			this_->OnMouseScroll(xoffset, yoffset);
+		}
+	}
 }
 
 Window::Window(const WindowConfig& config) :
@@ -91,6 +100,7 @@ Window::Window(const WindowConfig& config) :
 	glfwSetKeyCallback(window_, GlfwKeyCallback);
 	glfwSetCursorPosCallback(window_, GlfwCursorPositionCallback);
 	glfwSetMouseButtonCallback(window_, GlfwMouseButtonCallback);
+	glfwSetScrollCallback(window_, GlfwMouseScrollCallback);
 }
 
 Window::~Window()

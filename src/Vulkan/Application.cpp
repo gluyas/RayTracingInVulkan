@@ -95,6 +95,7 @@ void Application::Run()
 	window_->OnKey = [this](int key, int scancode, int action, int mods) { OnKey(key, scancode, action, mods); };
 	window_->OnCursorPosition = [this](double xpos, double ypos) { OnCursorPosition(xpos, ypos); };
 	window_->OnMouseButton = [this](int button, int action, int mods) { OnMouseButton(button, action, mods); };
+	window_->OnMouseScroll = [this](double xoffset, double yoffset) { OnMouseScroll(xoffset, yoffset); };
 	window_->Run();
 	device_->WaitIdle();
 }

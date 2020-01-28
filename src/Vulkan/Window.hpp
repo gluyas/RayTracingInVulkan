@@ -31,6 +31,7 @@ namespace Vulkan
 		std::function<void(int key, int scancode, int action, int mods)> OnKey;
 		std::function<void(double xpos, double ypos)> OnCursorPosition;
 		std::function<void(int button, int action, int mods)> OnMouseButton;
+		std::function<void(double xoffset, double yoffset)> OnMouseScroll;
 
 		void Close() const;
 		bool IsMinimized() const;

@@ -53,6 +53,7 @@ namespace Vulkan
 		virtual void OnKey(int key, int scancode, int action, int mods) { }
 		virtual void OnCursorPosition(double xpos, double ypos) { }
 		virtual void OnMouseButton(int button, int action, int mods) { }
+		virtual void OnMouseScroll(double xoffset, double yoffset) { }
 
 		bool isWireFrame_{};
 
