@@ -4,6 +4,7 @@ file(GLOB model_files models/*.obj models/*.mtl)
 file(GLOB shader_files shaders/*.vert shaders/*.frag shaders/*.rgen shaders/*.rchit shaders/*.rint shaders/*.rmiss shaders/*.tesc shaders/*.tese)
 file(GLOB texture_files textures/*.jpg textures/*.png textures/*.txt)
 file(GLOB map_files maps/*.jpg maps/*.png maps/*.txt)
+file(GLOB data_files data/*.csv)
 
 file(GLOB shader_extra_files shaders/*.glsl)
 set_source_files_properties(${shader_extra_files} PROPERTIES HEADER_FILE_ONLY TRUE)
@@ -64,14 +65,16 @@ copy_assets(font_files fonts copied_fonts)
 copy_assets(model_files models copied_models)
 copy_assets(texture_files textures copied_textures)
 copy_assets(map_files maps copied_maps)
+copy_assets(data_files data copied_data)
 	
 source_group("Fonts" FILES ${font_files})
 source_group("Models" FILES ${model_files})
 source_group("Shaders" FILES ${shader_files} ${shader_extra_files})
 source_group("Textures" FILES ${texture_files})
 source_group("Maps" FILES ${map_files})
+source_group("Data" FILES ${data_files})
 
 add_custom_target(
 	Assets 
 	DEPENDS ${copied_fonts} ${copied_models} ${compiled_shaders} ${copied_textures} ${copied_maps} 
-	SOURCES ${font_files} ${model_files} ${shader_files} ${shader_extra_files} ${texture_files} ${map_files})
+	SOURCES ${font_files} ${model_files} ${shader_files} ${shader_extra_files} ${texture_files} ${map_files} ${data_files})

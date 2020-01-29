@@ -35,7 +35,7 @@ RayTracer::RayTracer(const UserSettings& userSettings, const Vulkan::WindowConfi
 	userSettings_(userSettings)
 {
 	CheckFramebufferSize();
-	data_ = getRgbData("D:\\holnesruth\\Skin_threejs\\models\\Data_rgb.csv");
+	data_ = getRgbData("../assets/data/Data_rgb.csv");
 }
 
 RayTracer::~RayTracer()
