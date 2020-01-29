@@ -41,7 +41,6 @@ struct UserSettings final
 	bool RequiresAccumulationReset(const UserSettings& prev) const
 	{
 		return
-			IsRayTraced != prev.IsRayTraced ||
 			AccumulateRays != prev.AccumulateRays ||
 			NumberOfBounces != prev.NumberOfBounces ||
 			FieldOfView != prev.FieldOfView ||
@@ -53,8 +52,10 @@ struct UserSettings final
 			KEpi != prev.KEpi;
 	}
 
-	bool RequiresReload(const UserSettings& prev) const
+	bool RequiresObjReload(const UserSettings& prev) const
 	{
-		return RenderTextures != prev.RenderTextures;
+		return 
+			IsRayTraced != prev.IsRayTraced || 
+			RenderTextures != prev.RenderTextures;
 	}
 };

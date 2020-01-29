@@ -30,6 +30,9 @@ public:
 		float KB;
 		float BloodSaturation;
 		uint32_t KEpi;
+
+		bool RayTraced;
+		bool Textured;
 	};
 
 	static SceneAssets CubeAndSpheres(CameraInitialState& camera);

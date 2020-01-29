@@ -1,9 +1,3 @@
-#ifdef DEBUG
-#define DEBUG_MSG(str) do { std::cout << str << std::endl; } while( false )
-#else
-#define DEBUG_MSG(str) do { } while ( false )
-#endif
-
 #include "RayTracer.hpp"
 #include "UserInterface.hpp"
 #include "UserSettings.hpp"
@@ -13,11 +7,18 @@
 #include "Assets/UniformBuffer.hpp"
 #include "Utilities/Exception.hpp"
 #include "Utilities/Glm.hpp"
+#include "Utilities/csv.h"
 #include "Vulkan/Device.hpp"
 #include "Vulkan/SwapChain.hpp"
 #include "Vulkan/Window.hpp"
 #include <iostream>
 #include <sstream>
+
+#ifdef DEBUG
+#define DEBUG_MSG(str) do { std::cout << str << std::endl; } while( false )
+#else
+#define DEBUG_MSG(str) do { } while ( false )
+#endif
 
 namespace
 {
@@ -34,6 +35,7 @@ RayTracer::RayTracer(const UserSettings& userSettings, const Vulkan::WindowConfi
 	userSettings_(userSettings)
 {
 	CheckFramebufferSize();
+	data_ = getRgbData("D:\\holnesruth\\Skin_threejs\\models\\Data_rgb.csv");
 }
 
 RayTracer::~RayTracer()
@@ -101,29 +103,28 @@ void RayTracer::DeleteSwapChain()
 	Application::DeleteSwapChain();
 }
 
+void RayTracer::Reload()
+{
+	Device().WaitIdle();
+	DeleteSwapChain();
+	DeleteAccelerationStructures();
+	LoadScene(userSettings_.SceneIndex);
+	CreateAccelerationStructures();
+	CreateSwapChain();
+}
+
 void RayTracer::DrawFrame()
 {
 	DEBUG_MSG("RT Draw frame");
 	// Check if the scene has been changed by the user.
 	if (sceneIndex_ != static_cast<uint32_t>(userSettings_.SceneIndex))
 	{
-		Device().WaitIdle();
-		DeleteSwapChain();
-		DeleteAccelerationStructures();
-		LoadScene(userSettings_.SceneIndex);
-		CreateAccelerationStructures();
-		CreateSwapChain();
+		Reload();
 		return;
 	}
-
-	if (!starting_ && userSettings_.RequiresReload(previousSettings_)) {
+	if (!starting_ && userSettings_.RequiresObjReload(previousSettings_)) {
 		DEBUG_MSG("Reload Scene");
-		Device().WaitIdle();
-		DeleteSwapChain();
-		DeleteAccelerationStructures();
-		LoadScene(userSettings_.SceneIndex);
-		CreateAccelerationStructures();
-		CreateSwapChain();
+		Reload();
 	}
 
 	// Check if the accumulation buffer needs to be reset.
@@ -170,7 +171,7 @@ void RayTracer::Render(VkCommandBuffer commandBuffer, const uint32_t imageIndex)
 		const auto extent = SwapChain().Extent();
 
 		stats.RayRate = static_cast<float>(
-			double(extent.width*extent.height)*numberOfSamples_
+			double(extent.width) * double(extent.height) * numberOfSamples_ 
 			/ (deltaTime * 1000000000));
 
 		stats.TotalSamples = totalNumberOfSamples_;
@@ -274,7 +275,7 @@ void RayTracer::OnMouseScroll(double xoffset, double yoffset)
 	float fov = userSettings_.FieldOfView;
 
 	if (fov >= 10.0f && fov <= 90.0f)
-		fov *= pow(1.1f, -yoffset);
+		fov *= (float) pow(1.1f, -yoffset);
 	if (fov <= 10.0f)
 		fov = 10.0f;
 	if (fov >= 90.0f)
@@ -283,38 +284,31 @@ void RayTracer::OnMouseScroll(double xoffset, double yoffset)
 	userSettings_.FieldOfView = fov;
 }
 
+std::vector<glm::vec3> RayTracer::getRgbData(std::string filename)
+{
+	io::CSVReader<3> in(filename);
+	in.set_header("r", "g", "b");
+	double r, g, b;
+	glm::vec3 vec;
+	std::vector<glm::vec3> data;
+	while (in.read_row(r, g, b)) {
+		vec = glm::vec3(r, g, b);
+		data.push_back(vec);
+	}
+	return data;
+}
+
 void RayTracer::LoadScene(const uint32_t sceneIndex)
 {
+	cameraInitialState_.RayTraced = userSettings_.IsRayTraced;
+	cameraInitialState_.Textured = userSettings_.RenderTextures;
+
 	auto [models, textures] = SceneList::AllScenes[sceneIndex].second(cameraInitialState_);
 
 	// If there are no textures, add a dummy one. It makes the pipeline setup a lot easier.
 	if (textures.empty())
 	{
 		textures.push_back(Assets::Texture::LoadTexture("../assets/textures/white.png", Vulkan::SamplerConfig()));
-	}
-	
-	if (!userSettings_.RenderTextures) {
-		size_t size = textures.size();
-
-		if (size % 2 != 0)
-		{
-			textures.clear();
-			for (size_t i = 0; i < size; i++) {
-				textures.push_back(Assets::Texture::LoadTexture("../assets/textures/grey.png", Vulkan::SamplerConfig()));
-			}
-		} 
-		else 
-		{
-			textures.clear();
-			size_t size2 = size / 2;
-			for (size_t i = 0; i < size2; i++) {
-				textures.push_back(Assets::Texture::LoadTexture("../assets/textures/grey.png", Vulkan::SamplerConfig()));
-			}
-			textures.push_back(Assets::Texture::LoadTexture("../assets/maps/AlexJoinedDisp.png", Vulkan::SamplerConfig()));
-			/*textures.push_back(Assets::Texture::LoadTexture("../assets/maps/DisplacementMap1.png", Vulkan::SamplerConfig()));
-			textures.push_back(Assets::Texture::LoadTexture("../assets/maps/DisplacementMap2.png", Vulkan::SamplerConfig()));
-			textures.push_back(Assets::Texture::LoadTexture("../assets/maps/DisplacementMap3.png", Vulkan::SamplerConfig()));*/
-		}
 	}
 
 	scene_.reset(new Assets::Scene(CommandPool(), std::move(models), std::move(textures), true));

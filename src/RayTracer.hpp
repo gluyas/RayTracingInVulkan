@@ -21,6 +21,7 @@ protected:
 	void OnDeviceSet() override;
 	void CreateSwapChain() override;
 	void DeleteSwapChain() override;
+	void Reload();
 	void DrawFrame() override;
 	void Render(VkCommandBuffer commandBuffer, uint32_t imageIndex) override;
 
@@ -30,6 +31,8 @@ protected:
 	void OnMouseScroll(double xoffset, double yoffset) override;
 
 private:
+
+	std::vector<glm::vec3> RayTracer::getRgbData(std::string filename);
 
 	void LoadScene(uint32_t sceneIndex);
 	void CheckAndUpdateBenchmarkState(double prevTime);
@@ -61,4 +64,6 @@ private:
 	double sceneInitialTime_{};
 	double periodInitialTime_{};
 	uint32_t periodTotalFrames_{};
+
+	std::vector<glm::vec3> data_{};
 };
