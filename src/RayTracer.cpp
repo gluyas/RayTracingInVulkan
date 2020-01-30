@@ -35,7 +35,6 @@ RayTracer::RayTracer(const UserSettings& userSettings, const Vulkan::WindowConfi
 	userSettings_(userSettings)
 {
 	CheckFramebufferSize();
-	data_ = getRgbData("../assets/data/Data_rgb.csv");
 }
 
 RayTracer::~RayTracer()
@@ -282,20 +281,6 @@ void RayTracer::OnMouseScroll(double xoffset, double yoffset)
 		fov = 90.0f;
 
 	userSettings_.FieldOfView = fov;
-}
-
-std::vector<glm::vec3> RayTracer::getRgbData(std::string filename)
-{
-	io::CSVReader<3> in(filename);
-	in.set_header("r", "g", "b");
-	double r, g, b;
-	glm::vec3 vec;
-	std::vector<glm::vec3> data;
-	while (in.read_row(r, g, b)) {
-		vec = glm::vec3(r, g, b);
-		data.push_back(vec);
-	}
-	return data;
 }
 
 void RayTracer::LoadScene(const uint32_t sceneIndex)

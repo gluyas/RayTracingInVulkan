@@ -32,8 +32,6 @@ protected:
 
 private:
 
-	std::vector<glm::vec3> RayTracer::getRgbData(std::string filename);
-
 	void LoadScene(uint32_t sceneIndex);
 	void CheckAndUpdateBenchmarkState(double prevTime);
 	void CheckFramebufferSize() const;
@@ -64,6 +62,4 @@ private:
 	double sceneInitialTime_{};
 	double periodInitialTime_{};
 	uint32_t periodTotalFrames_{};
-
-	std::vector<glm::vec3> data_{};
 };
