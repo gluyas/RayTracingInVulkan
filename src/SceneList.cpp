@@ -400,5 +400,7 @@ SceneAssets SceneList::Alex(CameraInitialState& camera)
 		textures.push_back(Texture::LoadTexture("../assets/maps/AlexJoinedDisp.png", Vulkan::SamplerConfig()));
 	}
 
+	textures.push_back(Texture::LoadTexture("../assets/textures/Data_rgb.jpg", Vulkan::SamplerConfig()));
+
 	return std::forward_as_tuple(std::move(models), std::move(textures));
 }

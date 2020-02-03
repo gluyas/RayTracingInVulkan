@@ -3,7 +3,9 @@
 #extension GL_GOOGLE_include_directive : require
 #extension GL_NV_ray_tracing : require
 #include "Material.glsl"
+#include "UniformBufferObject.glsl"
 
+layout(binding = 3) readonly uniform UniformBufferObjectStruct { UniformBufferObject Camera; };
 layout(binding = 4) readonly buffer VertexArray { float Vertices[]; };
 layout(binding = 5) readonly buffer IndexArray { uint Indices[]; };
 layout(binding = 6) readonly buffer MaterialArray { Material[] Materials; };
@@ -12,6 +14,7 @@ layout(binding = 8) uniform sampler2D[] TextureSamplers;
 
 #include "Scatter.glsl"
 #include "Vertex.glsl"
+#include "Chromophores.glsl"
 
 hitAttributeNV vec2 HitAttributes;
 rayPayloadInNV RayPayload Ray;
@@ -42,5 +45,7 @@ void main()
 	const vec3 normal = normalize(Mix(v0.Normal, v1.Normal, v2.Normal, barycentrics));
 	const vec2 texCoord = Mix(v0.TexCoord, v1.TexCoord, v2.TexCoord, barycentrics);
 
-	Ray = Scatter(material, gl_WorldRayDirectionNV, normal, texCoord, gl_HitTNV, Ray.RandomSeed);
+	vec4 skinColour = FindChromophores(TextureSamplers[1], Camera.Melanin, Camera.KB, Camera.BloodSaturation, Camera.KEpi);
+
+	Ray = Scatter(material, gl_WorldRayDirectionNV, normal, texCoord, gl_HitTNV, Ray.RandomSeed, skinColour);
 }

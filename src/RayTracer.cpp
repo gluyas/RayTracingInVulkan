@@ -67,7 +67,6 @@ Assets::UniformBufferObject RayTracer::GetUniformBufferObject(const VkExtent2D e
 	ubo.RandomSeed = 1;
 	ubo.GammaCorrection = userSettings_.GammaCorrection;
 	ubo.HasSky = init.HasSky;
-
 	ubo.Melanin = userSettings_.Melanin;
 	ubo.KB = userSettings_.KB;
 	ubo.BloodSaturation = userSettings_.BloodSaturation;

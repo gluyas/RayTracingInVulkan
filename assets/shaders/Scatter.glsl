@@ -71,6 +71,25 @@ RayPayload ScatterSpecular(const Material m, const vec3 direction, const vec3 no
 	return RayPayload(colorAndDistance, scatter, seed);
 }
 
+// Specular
+RayPayload ScatterSpecular(const Material m, const vec3 direction, const vec3 normal, const vec2 texCoord, const float t, inout uint seed, vec4 skin)
+{
+	const bool isScattered = dot(direction, normal) < 0;
+	const vec4 texColor = m.DiffuseTextureId >= 0 ? texture(TextureSamplers[m.DiffuseTextureId], texCoord) : vec4(1);
+	
+	vec3 diffuse = skin.rgb * m.Diffuse.rgb * texColor.rgb;
+	vec3 lightDir = -direction;
+	vec3 viewDir = -direction;
+	float roughness = m.Fuzziness;
+
+	vec3 col = CookTorrance(diffuse, normal, lightDir, viewDir, roughness);
+
+	const vec4 colorAndDistance = vec4(col, t);
+	const vec4 scatter = vec4(normal + RandomInUnitSphere(seed), isScattered ? 1 : 0);
+
+	return RayPayload(colorAndDistance, scatter, seed);
+}
+
 // Diffuse Light
 RayPayload ScatterDiffuseLight(const Material m, const float t, inout uint seed)
 {
@@ -94,6 +113,25 @@ RayPayload Scatter(const Material m, const vec3 direction, const vec3 normal, co
 		return ScatterDieletric(m, normDirection, normal, texCoord, t, seed);
 	case MaterialSpecular:
 		return ScatterSpecular(m, normDirection, normal, texCoord, t, seed);
+	case MaterialDiffuseLight:
+		return ScatterDiffuseLight(m, t, seed);
+	}
+}
+
+RayPayload Scatter(const Material m, const vec3 direction, const vec3 normal, const vec2 texCoord, const float t, inout uint seed, vec4 skin)
+{
+	const vec3 normDirection = normalize(direction);
+
+	switch (m.MaterialModel)
+	{
+	case MaterialLambertian:
+		return ScatterLambertian(m, normDirection, normal, texCoord, t, seed);
+	case MaterialMetallic:
+		return ScatterMetallic(m, normDirection, normal, texCoord, t, seed);
+	case MaterialDielectric:
+		return ScatterDieletric(m, normDirection, normal, texCoord, t, seed);
+	case MaterialSpecular:
+		return ScatterSpecular(m, normDirection, normal, texCoord, t, seed, skin);
 	case MaterialDiffuseLight:
 		return ScatterDiffuseLight(m, t, seed);
 	}
