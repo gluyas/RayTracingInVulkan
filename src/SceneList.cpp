@@ -392,7 +392,7 @@ SceneAssets SceneList::Alex(CameraInitialState& camera)
 	}
 	else 
 	{
-		textures.push_back(Texture::LoadTexture("../assets/textures/grey.png", Vulkan::SamplerConfig()));
+		textures.push_back(Texture::LoadTexture("../assets/textures/white.png", Vulkan::SamplerConfig()));
 	}
 	
 	if (!camera.RayTraced)
