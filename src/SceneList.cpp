@@ -12,12 +12,12 @@ using Assets::Texture;
 
 const std::vector<std::pair<std::string, std::function<SceneAssets (SceneList::CameraInitialState&)>>> SceneList::AllScenes =
 {
-	{"Cube And Spheres", CubeAndSpheres},
 	{"Ray Tracing In One Weekend", RayTracingInOneWeekend},
 	{"Planets In One Weekend", PlanetsInOneWeekend},
 	{"Lucy In One Weekend", LucyInOneWeekend},
 	{"Cornell Box", CornellBox},
 	{"Cornell Box & Lucy", CornellBoxLucy},
+	{"Cube And Spheres", CubeAndSpheres},
 	{"Alex", Alex},
 };
 
